@@ -7,6 +7,47 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Welcome to My Website</title>
     <link rel="stylesheet" href="./style.css"> <!-- 引入外部CSS文件 -->
+    <!-- 引入 jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript">
+        function sha256Hash(password) {
+            const encoder = new TextEncoder();
+            const data = encoder.encode(password);
+
+            return window.crypto.subtle.digest('SHA-256', data)
+                .then(hashBuffer => {
+                    const hashArray = Array.from(new Uint8Array(hashBuffer));
+                    const hashedPassword = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+                    return hashedPassword;
+            });
+        }
+
+        function login() {
+            var username = document.getElementById("username").value;
+            var password = document.getElementById("password").value;
+
+            // SHA-256 示例用法
+            sha256Hash(password).then(hashedPassword => {
+              console.log('SHA-256 哈希后的密码:', hashedPassword);
+
+              $.ajax({
+                type: 'POST',//方法类型
+                url: '/login',
+                data: {username, hashedPassword},
+                success: function (result) {
+                    if (result.code == 200) {
+                        console.log('登录成功');
+                    } else {
+                        console.log('登录失败');
+                    }
+                },
+                error: function () {
+                    console.log('操作失败');
+                }
+              });
+            });
+        }
+    </script>
 </head>
 
 <body>
@@ -26,15 +67,6 @@
     </div>
 </div>
 
-<script>
-    function login() {
-        var username = document.getElementById("username").value;
-        var password = document.getElementById("password").value;
-
-        // 在这里可以添加登录逻辑，例如通过AJAX请求发送登录信息给后端进行验证
-        // 如果登录成功，可以跳转到其他页面，如果登录失败，可以显示错误信息给用户
-    }
-</script>
 </body>
 
 </html>

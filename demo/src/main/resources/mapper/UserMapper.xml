@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mms.demo.mapper.UserMapper">
+    <select id="findUserByName" resultMap="UserMap">
+        select
+        *
+        from user
+        where username = #{name}
+    </select>
+    <resultMap id="UserMap" type="com.mms.demo.model.User">
+        <id column="UserID" javaType="java.lang.Integer" property="id" />
+        <result column="Username" javaType="java.lang.String" property="name"/>
+        <result column="Password" javaType="java.lang.String" property="passwd"/>
+        <result column="Email" javaType="java.lang.String" property="email"/>
+        <result column="Address" javaType="java.lang.String" property="addr"/>
+        <result column="Phone_Number" javaType="java.lang.String" property="phone"/>
+        <result column="isAdmin" javaType="java.lang.Boolean" property="isadmin"/>
+    </resultMap>
+</mapper>
