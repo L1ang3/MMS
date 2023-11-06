@@ -1,15 +1,12 @@
 package com.mms.demo.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mms.demo.comm.Result;
 import com.mms.demo.service.LoginService;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+
 
 @Controller
 public class LoginController {
@@ -19,12 +16,17 @@ public class LoginController {
     @ResponseBody
     public Result login(@RequestParam("username") String loginName,
                         @RequestParam("hashedPassword") String password,
-                        HttpSession httpSession) {
-        if(loginService.login(loginName,password)){
+                        HttpSession session) {
+        if(loginService.login(loginName,password,session)){
             return Result.ok(null);
         }
         else{
             return Result.err(null);
         }
+    }
+
+    @RequestMapping("/welcome")
+    public String welcome() {
+        return "redirect:/assert/html/welcome.html";
     }
 }
