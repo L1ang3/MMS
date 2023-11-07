@@ -12,6 +12,6 @@ public class MmsMvcConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry){
         registry.addInterceptor(new LoginInterceptor())
                 .addPathPatterns("/**")
-                .excludePathPatterns("/","/login","/assert/**","/index.html");
+                .excludePathPatterns("/","/login","/assert/**","/index.html","/register");
     }
 }

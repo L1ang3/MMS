@@ -1,5 +1,6 @@
 package com.mms.demo.service.impl;
 
+import com.mms.demo.comm.Result;
 import com.mms.demo.mapper.UserMapper;
 import com.mms.demo.model.User;
 import com.mms.demo.service.LoginService;
@@ -17,7 +18,18 @@ public class LoginServiceImpl implements LoginService {
         boolean res = user != null && user.getPasswd().equals(passwd);
         if(res){
             session.setAttribute("user",user);
+            session.setAttribute("name",user.getName());
         }
         return res;
+    }
+
+    @Override
+    public Result register(User user){
+        if(userMapper.isNameExisted(user.getName())==0){
+            userMapper.insertUser(user);
+        }else{
+            return Result.err("name exists");
+        }
+        return Result.ok(null);
     }
 }

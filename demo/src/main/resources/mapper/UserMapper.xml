@@ -9,6 +9,12 @@
         from user
         where username = #{name}
     </select>
+    <select id="isNameExisted" resultType="java.lang.Integer">
+        select
+        count(*)
+        from user
+        where username = #{name}
+    </select>
     <resultMap id="UserMap" type="com.mms.demo.model.User">
         <id column="UserID" javaType="java.lang.Integer" property="id" />
         <result column="Username" javaType="java.lang.String" property="name"/>
@@ -18,4 +24,12 @@
         <result column="Phone_Number" javaType="java.lang.String" property="phone"/>
         <result column="isAdmin" javaType="java.lang.Boolean" property="isadmin"/>
     </resultMap>
+
+    <insert id="insertUser" parameterType="com.mms.demo.model.User">
+        insert into
+        user
+        (Username,Password,Email,Address,Phone_Number,isAdmin)
+        values
+        (#{name},#{passwd},#{email},#{addr},#{phone},#{isadmin})
+    </insert>
 </mapper>

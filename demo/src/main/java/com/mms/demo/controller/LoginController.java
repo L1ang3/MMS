@@ -1,6 +1,7 @@
 package com.mms.demo.controller;
 
 import com.mms.demo.comm.Result;
+import com.mms.demo.model.User;
 import com.mms.demo.service.LoginService;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpSession;
@@ -25,8 +26,25 @@ public class LoginController {
         }
     }
 
+    @PostMapping("/register")
+    @ResponseBody
+    public Result register(@RequestParam("username") String name,
+                            @RequestParam("hashedPassword") String password,
+                           @RequestParam("email") String email,
+                           @RequestParam("address") String address,
+                           @RequestParam("phone") String phone) {
+        User user=new User(name,password,email,address,phone,false);
+        return loginService.register(user);
+    }
+
+    @RequestMapping("/logout")
+    public String logout(HttpSession session) {
+        session.removeAttribute("user");
+        return "/";
+    }
+
     @RequestMapping("/welcome")
     public String welcome() {
-        return "redirect:/assert/html/welcome.html";
+        return "html/welcome.html";
     }
 }

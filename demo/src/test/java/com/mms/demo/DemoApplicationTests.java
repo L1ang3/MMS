@@ -21,4 +21,11 @@ class DemoApplicationTests {
 		System.out.println(user);
 	}
 
+	@Test
+	void insertUser(){
+		User user= new User("test","123","@.com","0","0",false);
+		if(userMapper.isNameExisted("test")==0){
+			userMapper.insertUser(user);
+		}
+	}
 }

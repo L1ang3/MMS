@@ -9,5 +9,18 @@ public class User {
     private String phone;
     private boolean isadmin;
 
+    public  User(){}
+
+    public User(String name,String passwd,String email,String addr,String phone,boolean isadmin){
+        this.name = name;
+        this.passwd = passwd;
+        this.email = email;
+        this.addr = addr;
+        this.phone = phone;
+        this.isadmin = isadmin;
+    }
+
     public String getPasswd(){return passwd;}
+
+    public String getName(){return name;}
 }

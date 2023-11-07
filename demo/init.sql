@@ -9,7 +9,7 @@ CREATE TABLE
         UserID INT PRIMARY KEY AUTO_INCREMENT,
         Username VARCHAR(50) UNIQUE NOT NULL,
         Password VARCHAR(64) NOT NULL,
-        Email VARCHAR(100) UNIQUE NOT NULL,
+        Email VARCHAR(100) NOT NULL,
         Address VARCHAR(255),
         Phone_Number VARCHAR(20),
         IsAdmin BOOLEAN DEFAULT false
