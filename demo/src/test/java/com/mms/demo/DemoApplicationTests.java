@@ -1,15 +1,21 @@
 package com.mms.demo;
 
+import com.mms.demo.mapper.ProductMapper;
 import com.mms.demo.mapper.UserMapper;
+import com.mms.demo.model.Product;
 import com.mms.demo.model.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.List;
+
 @SpringBootTest
 class DemoApplicationTests {
 	@Autowired
 	private UserMapper userMapper;
+	@Autowired
+	private ProductMapper productMapper;
 
 	@Test
 	void contextLoads() {
@@ -28,4 +34,12 @@ class DemoApplicationTests {
 			userMapper.insertUser(user);
 		}
 	}
+	@Test
+	void findAllProduct(){
+		List<Product> products = productMapper.findAllProduct();
+		for (Product product:products) {
+			System.out.println(product.getName());
+		}
+	}
+
 }

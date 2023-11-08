@@ -1,7 +1,7 @@
 -- Active: 1681270724843@@127.0.0.1@3306@mms
 
 use mms;
-
+-- Prepare user table
 DROP TABLE IF EXISTS User;
 
 CREATE TABLE
@@ -31,4 +31,22 @@ VALUES (
         '12345678910',
         '0.0.0.0',
         true
+    );
+
+-- Prepare product table
+DROP TABLE IF EXISTS product;
+CREATE TABLE
+    product (
+        productid INT AUTO_INCREMENT PRIMARY KEY,
+        name VARCHAR(255) NOT NULL,
+        price DECIMAL(10, 2) NOT NULL,
+        imageurl VARCHAR(255)
+    );
+
+INSERT INTO
+    product(name, price, imageurl)
+VALUES (
+        'ipone_test_1',
+        10.00,
+        '/static/image/ipone_test_1.jpg'
     );

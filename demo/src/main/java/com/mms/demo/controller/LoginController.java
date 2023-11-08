@@ -6,6 +6,7 @@ import com.mms.demo.service.LoginService;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -41,10 +42,5 @@ public class LoginController {
     public String logout(HttpSession session) {
         session.removeAttribute("user");
         return "/";
-    }
-
-    @RequestMapping("/welcome")
-    public String welcome() {
-        return "html/welcome.html";
     }
 }
