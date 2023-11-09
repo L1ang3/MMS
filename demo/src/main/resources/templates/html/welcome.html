@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <title>Welcome</title>
@@ -13,38 +14,42 @@
             top: 10px;
             right: 10px;
         }
+
         .product {
             width: 160px;
             height: 160px;
             margin: 10px;
         }
+
         img {
             display: block;
             max-width: 100%;
             max-height: 100%;
         }
 
-        #group{
+        #group {
             display: flex;
             justify-content: flex-start;
         }
     </style>
 </head>
+
 <body>
     <div class="centered-text">
-        <h1 >Welcome</h1>
+        <h1>Welcome</h1>
         <p>You have successfully logged in.</p>
     </div>
     <div class="right-top">
-        <span>hello,</span><span th:text="${session.user.name}" ></span>
+        <span>hello,</span><span th:text="${session.user.name}"></span>
         <a href="/logout">Logout</a>
     </div>
 
     <div id="group">
         <div th:each="product:${products}" class="product">
-            <span th:text="${product.name}"></span>
+            <img th:src="${product.imgUrl}" alt="">
         </div>
     </div>
 
 </body>
+
 </html>

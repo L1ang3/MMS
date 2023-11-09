@@ -5,7 +5,7 @@ use mms;
 DROP TABLE IF EXISTS User;
 
 CREATE TABLE
-    User (
+    user (
         UserID INT PRIMARY KEY AUTO_INCREMENT,
         Username VARCHAR(50) UNIQUE NOT NULL,
         Password VARCHAR(64) NOT NULL,
@@ -46,7 +46,15 @@ CREATE TABLE
 INSERT INTO
     product(name, price, imageurl)
 VALUES (
-        'ipone_test_1',
+        'iphone_test_1',
         10.00,
-        '/static/image/ipone_test_1.jpg'
+        '/image/iphone_test_1.jpg'
+    ), (
+        'iphone_test_2',
+        1111.11,
+        '/image/iphone_test_2.jpg'
+    ), (
+        'iphone_test_3',
+        1111.11,
+        '/image/iphone_test_3.jpg'
     );
