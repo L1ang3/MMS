@@ -5,20 +5,75 @@
     <meta charset="UTF-8">
     <title>Welcome</title>
     <style>
+        .product {
+            align-items: center; /* 居中对齐元素水平方向 */
+            justify-content: center; /* 居中对齐元素垂直方向 */
+            display: flex;
+            width: 160px;
+            height: 200px; /* Increased height for additional content */
+            margin: 10px;
+            padding: 10px;
+            background-color: #f7f7f7; /* Light gray background */
+            border-radius: 8px; /* Rounded corners */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+            text-align: center;
+        }
+
+        .product img {
+            max-width: 100%;
+            max-height: 80%; /* Adjusted height for the image */
+            border-radius: 8px; /* Rounded corners for images */
+        }
+
+        .product h2 {
+            margin-top: 10px;
+            font-size: 16px;
+        }
+
+        .product p {
+            font-size: 14px;
+            color: #888;
+        }
+        body {
+            font-family: '`Arial', sans-serif;
+            background-color: #f2f2f2; /* Light background color */
+            color: #333; /* Dark text color */
+            margin: 0;
+            padding: 0;
+        }
+
         .centered-text {
             text-align: center;
+            padding: 20px;
+            background-color: #f2f2f2; /* Light background color */
+            color: #333; /* Dark text color */
+            border-bottom: 2px solid #ddd; /* Separation line */
         }
 
         .right-top {
             position: absolute;
             top: 10px;
             right: 10px;
+            display: flex;
+            align-items: center;
+            background-color: #fff; /* White background for user information */
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+        }
+        button {
+            margin: 10px;
+            padding: 10px 20px;
+            background-color: #4caf50;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
         }
 
-        .product {
-            width: 160px;
-            height: 160px;
-            margin: 10px;
+        .user-options {
+            margin-left: 10px;
+            display: none;
         }
 
         img {
@@ -29,26 +84,78 @@
 
         #group {
             display: flex;
+            flex-wrap: wrap;
             justify-content: flex-start;
         }
+
+        .product-group {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around; /* Improved alignment */
+            margin-top: 20px; /* Increased top margin for better separation */
+        }
+
+        .product-group .product {
+            flex: 0 0 calc(20% - 20px);
+        }
+
+        .info-group {
+            margin: 10px;
+            display: flex;
+            flex-direction: column; /* 竖直排列 */
+            align-items: center; /* 居中对齐元素水平方向 */
+            justify-content: center; /* 居中对齐元素垂直方向 */
+            height: 100%; /* 让容器充满高度以使其内容垂直居中 */
+        }
+
+
+
     </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const toggleButton = document.getElementById('toggle-options');
+            const userOptions = document.querySelector('.user-options');
+
+            toggleButton.addEventListener('click', function () {
+                if (userOptions.style.display === 'none' || userOptions.style.display === '') {
+                    userOptions.style.display = 'block';
+                } else {
+                    userOptions.style.display = 'none';
+                }
+            });
+        });
+    </script>
+
 </head>
 
 <body>
-    <div class="centered-text">
-        <h1>Welcome</h1>
-        <p>You have successfully logged in.</p>
-    </div>
-    <div class="right-top">
-        <span>hello,</span><span th:text="${session.user.name}"></span>
+<div class="centered-text">
+    <h1>Welcome</h1>
+    <p>You have successfully logged in.</p>
+</div>
+<div class="right-top">
+    <span>Hello, <span th:text="${session.user.name}"></span> </span>
+    <button id="toggle-options">user options</button>
+    <div class="user-options">
+        <a href="/view-cart">View Cart</a>
         <a href="/logout">Logout</a>
     </div>
+</div>
 
-    <div id="group">
-        <div th:each="product:${products}" class="product">
-            <img th:src="${product.imgUrl}" alt="">
+
+<div id="group" class="product-group">
+    <div th:each="product, iterationStat : ${products}" class="product">
+        <img th:src="${product.imgUrl}" alt="">
+        <div class="info-group">
+            <span th:text="${product.name}"></span>
+            <span th:text="${product.price}+￥"></span>
+            <a href="/addcart">Add to cart</a>
         </div>
+
+        <!-- 在第5张图片后插入一个新的product-group -->
+        <div th:if="${iterationStat.index % 5 == 4}" class="product-group"></div>
     </div>
+</div>
 
 </body>
 
