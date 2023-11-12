@@ -20,6 +20,7 @@ public class User {
         this.isadmin = isadmin;
     }
 
+    public int getId(){return id;}
     public String getPasswd(){return passwd;}
 
     public String getName(){return name;}

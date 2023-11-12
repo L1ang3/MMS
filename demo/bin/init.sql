@@ -1,16 +1,11 @@
+-- Active: 1681270724843@@127.0.0.1@3306@mms
 
 use mms;
-
 -- Prepare user table
-
-DROP TABLE IF EXISTS cart;
-
 DROP TABLE IF EXISTS User;
 
-DROP TABLE IF EXISTS product;
-
 CREATE TABLE
-    user (
+    User (
         UserID INT PRIMARY KEY AUTO_INCREMENT,
         Username VARCHAR(50) UNIQUE NOT NULL,
         Password VARCHAR(64) NOT NULL,
@@ -39,14 +34,13 @@ VALUES (
     );
 
 -- Prepare product table
-
+DROP TABLE IF EXISTS product;
 CREATE TABLE
     product (
         productid INT AUTO_INCREMENT PRIMARY KEY,
         name VARCHAR(255) NOT NULL,
         price DECIMAL(10, 2) NOT NULL,
-        imageurl VARCHAR(255),
-        quantity INT
+        imageurl VARCHAR(255)
     );
 
 INSERT INTO
@@ -63,16 +57,4 @@ VALUES (
         'iphone_test_3',
         1111.11,
         '/image/iphone_test_3.jpg'
-    );
-
--- Prepare cart table
-
-CREATE TABLE
-    cart (
-        cartid INT PRIMARY KEY AUTO_INCREMENT,
-        userid INT,
-        productid INT,
-        quantity INT,
-        FOREIGN KEY (userid) REFERENCES user(UserID),
-        FOREIGN KEY (productid) REFERENCES product(productid)
     );

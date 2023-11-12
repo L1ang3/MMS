@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://s3.pstatp.com/cdn/expire-1-M/jquery/3.3.1/jquery.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const toggleButton = document.getElementById('toggle-options');
+            const userOptions = document.querySelector('.user-options');
+
+            toggleButton.addEventListener('click', function () {
+                if (userOptions.style.display === 'none' || userOptions.style.display === '') {
+                    userOptions.style.display = 'block';
+                } else {
+                    userOptions.style.display = 'none';
+                }
+            });
+        });
+
+        function removeProduct(index) {
+            // 获取产品名称、价格和产品ID
+            var productId = document.getElementById("productId_" + index).value;
+
+            // 发送POST请求
+            $.ajax({
+                url: '/removecart',
+                type: 'POST',
+                data: { productId },
+                success: function(response) {
+                    // 处理成功的响应
+                    console.log(response);
+                    window.location.href = '/viewcart';
+                    alert('移出购物车成功');
+
+                },
+                error: function(error) {
+                    // 处理错误
+                    alert('请求失败');
+                }
+            });
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f2f2f2;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        .centered-text {
+            text-align: center;
+            padding: 20px;
+            background-color: #f2f2f2;
+            color: #333;
+            border-bottom: 2px solid #ddd;
+        }
+
+        #cart {
+            display: flex;
+            justify-content: space-between;
+            padding: 20px;
+        }
+
+        .product {
+            align-items: center;
+            justify-content: center;
+            display: flex;
+            flex-direction: column; /* Align content vertically */
+            width: 160px;
+            height: 200px;
+            margin: 10px;
+            padding: 10px;
+            background-color: #f7f7f7;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .product img {
+            max-width: 100%;
+            max-height: 80%;
+            border-radius: 8px;
+        }
+
+        .product h2 {
+            margin-top: 10px;
+            font-size: 16px;
+        }
+
+        .product p {
+            font-size: 14px;
+            color: #888;
+        }
+
+        .cart-product {
+            flex: 0 0 calc(30% - 20px);
+        }
+
+        .total {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 18px;
+        }
+
+        button {
+            margin: 10px;
+            padding: 10px 20px;
+            background-color: #4caf50;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .right-top {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            display: flex;
+            align-items: center;
+            background-color: #fff; /* White background for user information */
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+        }
+        .user-options {
+            margin-left: 10px;
+            display: none;
+        }
+    </style>
+    <title>Shopping Cart</title>
+</head>
+<body>
+<div class="centered-text">
+    <h1>Your Shopping Cart</h1>
+</div>
+<div class="right-top">
+    <span th:text="${session.user.name}"></span>
+    <button id="toggle-options">user options</button>
+    <div class="user-options">
+        <a href="/welcome">Back</a>
+        <a href="/logout">Logout</a>
+    </div>
+</div>
+<div id="cart">
+    <div class="cart-product product" th:each="product, iterationStat : ${products}">
+        <input type="hidden" th:id="'productId_' + ${iterationStat.index}" th:value="${product.productId}">
+        <img th:src="${product.imgUrl}" alt="Product" th:alt="${product.name}">
+        <h2 th:text="${product.name}">Product</h2>
+        <p th:text="'$' + ${product.price}"></p>
+        <p th:text="${product.quantity}"></p>
+        <button th:onclick="'removeProduct(' + ${iterationStat.index} + ')'" >Remove</button>
+    </div>
+</div>
+
+<div class="total">
+    <p>Total: $89.97</p>
+    <button>Checkout</button>
+</div>
+</body>
+</html>

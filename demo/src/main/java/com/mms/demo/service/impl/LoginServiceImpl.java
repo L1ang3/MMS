@@ -19,6 +19,7 @@ public class LoginServiceImpl implements LoginService {
         if(res){
             session.setAttribute("user",user);
             session.setAttribute("name",user.getName());
+            session.setAttribute("id",user.getId());
         }
         return res;
     }

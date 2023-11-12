@@ -1,5 +1,6 @@
 package com.mms.demo;
 
+import com.mms.demo.mapper.CartMapper;
 import com.mms.demo.mapper.ProductMapper;
 import com.mms.demo.mapper.UserMapper;
 import com.mms.demo.model.Product;
@@ -16,6 +17,8 @@ class DemoApplicationTests {
 	private UserMapper userMapper;
 	@Autowired
 	private ProductMapper productMapper;
+	@Autowired
+	private CartMapper cartMapper;
 
 	@Test
 	void contextLoads() {
@@ -36,6 +39,14 @@ class DemoApplicationTests {
 	}
 	@Test
 	void findAllProduct(){
+		List<Product> products = cartMapper.findUserCart(1);
+		for (Product product:products) {
+			System.out.println(product.getName());
+		}
+	}
+
+	@Test
+	void findUserCart(){
 		List<Product> products = productMapper.findAllProduct();
 		for (Product product:products) {
 			System.out.println(product.getName());

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mms.demo.mapper.CartMapper">
+    <select id="findUserCart" resultMap="ProductMap">
+        select
+        cart.productid as productid, name, price, imageurl, cart.quantity as quantity
+        from product,cart
+        where cart.userid = #{userid} and cart.productid = product.productid;
+    </select>
+
+    <resultMap id="ProductMap" type="com.mms.demo.model.Product">
+        <id column="productid" javaType="java.lang.Integer" property="productId" />
+        <result column="name" javaType="java.lang.String" property="name"/>
+        <result column="price" javaType="java.lang.Double" property="price"/>
+        <result column="imageurl" javaType="java.lang.String" property="imgUrl"/>
+        <result column="quantity" javaType="java.lang.Integer" property="quantity"/>
+    </resultMap>
+
+    <insert id="insertOrder">
+        INSERT INTO cart (userid, productid, quantity)
+        values (#{userid},#{productid},#{quantity})
+    </insert>
+
+    <select id="isOrderExisted" resultType="java.lang.Integer">
+        select count(*)
+        from
+        cart
+        where userid = #{userid} and productid = #{productid}
+    </select>
+
+    <update id="addOrder">
+        update cart
+        set quantity = quantity + #{quantity}
+        where userid = #{userid} and productid = #{productid}
+    </update>
+
+    <delete id="removeOrder">
+        delete
+        from cart
+        where userid = #{userid} and productid = #{productid}
+    </delete>
+</mapper>

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to My Website</title>
+    <link rel="stylesheet" href="assert/css/style.css"> <!-- 引入外部CSS文件 -->
+    <!-- 引入 jQuery -->
+    <script src="https://s3.pstatp.com/cdn/expire-1-M/jquery/3.3.1/jquery.min.js"></script>
+    <script src="assert/js/sha256.js"></script>
+    <script type="text/javascript">
+        function login() {
+            var username = document.getElementById("username").value;
+            var password = document.getElementById("password").value;
+
+            // SHA-256 示例用法
+            hashedPassword = SHA256(password);
+            console.log('SHA-256 哈希后的密码:', hashedPassword);
+            $.ajax({
+                type: 'POST',//方法类型
+                url: '/login',
+                data: {username, hashedPassword},
+                success: function (result) {
+                    if (result.code == 200) {
+                        window.location.href = '/welcome';
+
+                    } else {
+                        alert('登录失败');
+                    }
+                },
+                error: function () {
+                    alert('操作失败');
+                }
+            });
+        }
+
+        // 当用户点击"注册"按钮时，切换注册表单的显示和隐藏状态
+        function toggleRegisterForm() {
+            var registerForm = document.querySelector('.register-form');
+            registerForm.classList.toggle('hidden');
+        }
+
+        function register() {
+            var username = document.getElementById("new-username").value;
+            var password = document.getElementById("new-password").value;
+            var email = document.getElementById("email").value;
+            var address = document.getElementById("address").value;
+            var phone = document.getElementById("phone").value;
+
+            hashedPassword = SHA256(password);
+            console.log('SHA-256 哈希后的密码:', hashedPassword);
+            $.ajax({
+                type: 'POST',//方法类型
+                url: '/register',
+                data: {username, hashedPassword,email,address,phone},
+                success: function (result) {
+                    if (result.code == 200) {
+                        alert('注册成功！');
+                        var registerForm = document.querySelector('.register-form');
+                        registerForm.classList.toggle('hidden');
+
+                    } else {
+                        alert('注册失败！用户名已被使用');
+                    }
+                },
+                error: function () {
+                    console.log('操作失败');
+                }
+            });
+        }
+
+    </script>
+</head>
+
+<body>
+<div class="container">
+    <div class="login-form">
+        <h2>Login</h2>
+        <div class="form-group">
+            <input type="text" placeholder="Username" id="username">
+        </div>
+        <div class="form-group">
+            <input type="password" placeholder="Password" id="password">
+        </div>
+        <div class="form-group">
+            <button onclick="login()">Login</button>
+            <button onclick="toggleRegisterForm()">Register</button>
+        </div>
+    </div>
+    <div class="register-form hidden">
+        <div class="form-group">
+            <input type="text" placeholder="New Username" id="new-username">
+        </div>
+        <div class="form-group">
+            <input type="password" placeholder="New Password" id="new-password">
+        </div>
+        <div class="form-group">
+            <input type="email" placeholder="Your Email" id="email">
+        </div>
+        <div class="form-group">
+            <input type="address" placeholder="Your Address" id="address">
+        </div>
+        <div class="form-group">
+            <input type="phone" placeholder="Your Phone Number" id="phone">
+        </div>
+        <div class="form-group">
+            <button onclick="register()">Register</button>
+        </div>
+    </div>
+</div>
+
+</body>
+
+</html>

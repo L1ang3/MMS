@@ -1,5 +1,6 @@
 package com.mms.demo.service;
 
-public interface ShopService {
+import com.mms.demo.comm.Result;
 
+public interface ShopService {
 }
