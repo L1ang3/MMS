@@ -5,6 +5,8 @@ import com.mms.demo.mapper.ProductMapper;
 import com.mms.demo.mapper.UserMapper;
 import com.mms.demo.model.Product;
 import com.mms.demo.model.User;
+import com.mms.demo.service.MailService;
+import jakarta.annotation.Resource;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,6 +21,9 @@ class DemoApplicationTests {
 	private ProductMapper productMapper;
 	@Autowired
 	private CartMapper cartMapper;
+
+	@Resource
+	private MailService mailService;
 
 	@Test
 	void contextLoads() {
@@ -51,6 +56,14 @@ class DemoApplicationTests {
 		for (Product product:products) {
 			System.out.println(product.getName());
 		}
+	}
+
+	@Test
+	void sendMail(){
+		mailService.sendSimpleMail("csjlang@mail.scut.edu.cn",
+				"870245707@qq.com",
+				"test",
+				"hello world!");
 	}
 
 }

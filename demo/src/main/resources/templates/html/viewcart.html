@@ -130,6 +130,23 @@
             display: none;
         }
     </style>
+    <!-- Thymeleaf脚本 -->
+    <script>
+        window.onload = function() {
+            updateTotalAmount(); // 调用你的函数
+        };
+
+        function updateTotalAmount() {
+            var totalAmount = 0;
+            $('.cart-product').each(function() {
+                var price = parseFloat($(this).find('p:first').text().replace('$', ''));
+                var quantity = parseInt($(this).find('p:last').text());
+                totalAmount += price * quantity;
+            });
+
+            $('#totalAmount').text(totalAmount.toFixed(2));
+        }
+    </script>
     <title>Shopping Cart</title>
 </head>
 <body>
@@ -149,14 +166,14 @@
         <input type="hidden" th:id="'productId_' + ${iterationStat.index}" th:value="${product.productId}">
         <img th:src="${product.imgUrl}" alt="Product" th:alt="${product.name}">
         <h2 th:text="${product.name}">Product</h2>
-        <p th:text="'$' + ${product.price}"></p>
+        <p th:text=" ${product.price} + '￥'"></p>
         <p th:text="${product.quantity}"></p>
         <button th:onclick="'removeProduct(' + ${iterationStat.index} + ')'" >Remove</button>
     </div>
 </div>
 
 <div class="total">
-    <p>Total: $89.97</p>
+    <p>Total: <span id="totalAmount"></span>￥</p>
     <button>Checkout</button>
 </div>
 </body>

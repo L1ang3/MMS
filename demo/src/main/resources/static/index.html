@@ -43,33 +43,50 @@
         }
 
         function register() {
-            var username = document.getElementById("new-username").value;
-            var password = document.getElementById("new-password").value;
             var email = document.getElementById("email").value;
-            var address = document.getElementById("address").value;
-            var phone = document.getElementById("phone").value;
 
-            hashedPassword = SHA256(password);
-            console.log('SHA-256 哈希后的密码:', hashedPassword);
-            $.ajax({
-                type: 'POST',//方法类型
-                url: '/register',
-                data: { username, hashedPassword, email, address, phone },
-                success: function (result) {
-                    if (result.code == 200) {
-                        alert('注册成功！');
-                        var registerForm = document.querySelector('.register-form');
-                        registerForm.classList.toggle('hidden');
+            // 正则表达式来验证邮箱格式
+            var emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
 
-                    } else {
-                        alert('注册失败！用户名已被使用');
+            // 检查邮箱是否有效
+            if (!emailRegex.test(email)) {
+                // 邮箱无效，显示错误消息
+                var validationMessage = document.querySelector(".validation-message");
+                validationMessage.innerText = "Invalid email address. Please enter a valid email.";
+                validationMessage.style.display = "block";
+            }
+            else {
+                var username = document.getElementById("new-username").value;
+                var password = document.getElementById("new-password").value;
+                var email = document.getElementById("email").value;
+                var address = document.getElementById("address").value;
+                var phone = document.getElementById("phone").value;
+
+                hashedPassword = SHA256(password);
+                console.log('SHA-256 哈希后的密码:', hashedPassword);
+                $.ajax({
+                    type: 'POST',//方法类型
+                    url: '/register',
+                    data: { username, hashedPassword, email, address, phone },
+                    success: function (result) {
+                        if (result.code == 200) {
+                            alert('注册成功！');
+                            var registerForm = document.querySelector('.register-form');
+                            registerForm.classList.toggle('hidden');
+
+                        } else {
+                            alert('注册失败！用户名已被使用');
+                        }
+                    },
+                    error: function () {
+                        console.log('操作失败');
                     }
-                },
-                error: function () {
-                    console.log('操作失败');
-                }
-            });
+                });
+            }
+
+
         }
+
 
     </script>
 </head>
@@ -98,6 +115,7 @@
             </div>
             <div class="form-group">
                 <input type="email" placeholder="Your Email" id="email">
+                <div class="validation-message" style="display:none;"></div>
             </div>
             <div class="form-group">
                 <input type="address" placeholder="Your Address" id="address">
