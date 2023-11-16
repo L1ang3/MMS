@@ -73,4 +73,19 @@ public class ShopController {
         cartMapper.removeOrder(id,productId);
         return Result.ok(null);
     }
+
+
+    @PostMapping("/checkout")
+    @ResponseBody
+    public Result checkout(@RequestParam("selectedProducts") List<Integer> selectedProducts, HttpSession session) {
+        Object atr = session.getAttribute("id");
+        if(atr == null){
+            return Result.err("not login");
+        }
+        int id = (Integer)atr;
+        for(int productId:selectedProducts){
+            cartMapper.removeOrder(id,productId);
+        }
+        return Result.ok(null);
+    }
 }

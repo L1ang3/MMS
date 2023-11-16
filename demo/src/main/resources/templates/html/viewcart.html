@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -27,14 +28,14 @@
                 url: '/removecart',
                 type: 'POST',
                 data: { productId },
-                success: function(response) {
+                success: function (response) {
                     // 处理成功的响应
                     console.log(response);
                     window.location.href = '/viewcart';
                     alert('移出购物车成功');
 
                 },
-                error: function(error) {
+                error: function (error) {
                     // 处理错误
                     alert('请求失败');
                 }
@@ -68,7 +69,8 @@
             align-items: center;
             justify-content: center;
             display: flex;
-            flex-direction: column; /* Align content vertically */
+            flex-direction: column;
+            /* Align content vertically */
             width: 160px;
             height: 200px;
             margin: 10px;
@@ -114,17 +116,21 @@
             border-radius: 5px;
             cursor: pointer;
         }
+
         .right-top {
             position: absolute;
             top: 10px;
             right: 10px;
             display: flex;
             align-items: center;
-            background-color: #fff; /* White background for user information */
+            background-color: #fff;
+            /* White background for user information */
             padding: 10px;
             border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            /* Add a subtle shadow */
         }
+
         .user-options {
             margin-left: 10px;
             display: none;
@@ -132,49 +138,90 @@
     </style>
     <!-- Thymeleaf脚本 -->
     <script>
-        window.onload = function() {
+        window.onload = function () {
             updateTotalAmount(); // 调用你的函数
         };
 
         function updateTotalAmount() {
+            var n = 0;
             var totalAmount = 0;
-            $('.cart-product').each(function() {
-                var price = parseFloat($(this).find('p:first').text().replace('$', ''));
-                var quantity = parseInt($(this).find('p:last').text());
-                totalAmount += price * quantity;
+            $('.cart-product').each(function () {
+                var checkbox = this.querySelector('input[type="checkbox"]');
+                if (checkbox.checked) {
+                    n++;
+                    var price = parseFloat($(this).find('p:first').text().replace('$', ''));
+                    var quantity = parseInt($(this).find('p:last').text());
+                    totalAmount += price * quantity;
+                }
             });
-
+            console.log(n);
             $('#totalAmount').text(totalAmount.toFixed(2));
+        }
+
+        var selectedProducts = []; // 存储所选中的商品的productId
+        function updateSelectedProducts(index) {
+            var checkbox = document.getElementById('checkbox_' + index);
+            var productId = document.getElementById('productId_' + index).value;
+            if (checkbox.checked) {
+                selectedProducts.push(productId); // 将productId添加到所选中的商品列表中
+            } else {
+                var indexToRemove = selectedProducts.indexOf(productId);
+                if (indexToRemove !== -1) {
+                    selectedProducts.splice(indexToRemove, 1); // 从所选中的商品列表中移除productId
+                }
+            }
+        }
+
+        function checkout() {
+            $.ajax({
+                url: '/checkout',
+                type: 'POST',
+                data: { selectedProducts },
+                success: function (response) {
+                    // 处理成功的响应
+                    console.log(response);
+                    window.location.href = '/viewcart';
+                },
+                error: function (error) {
+                    // 处理错误
+                    alert('请求失败');
+                }
+            });
         }
     </script>
     <title>Shopping Cart</title>
 </head>
-<body>
-<div class="centered-text">
-    <h1>Your Shopping Cart</h1>
-</div>
-<div class="right-top">
-    <span th:text="${session.user.name}"></span>
-    <button id="toggle-options">user options</button>
-    <div class="user-options">
-        <a href="/welcome">Back</a>
-        <a href="/logout">Logout</a>
-    </div>
-</div>
-<div id="cart">
-    <div class="cart-product product" th:each="product, iterationStat : ${products}">
-        <input type="hidden" th:id="'productId_' + ${iterationStat.index}" th:value="${product.productId}">
-        <img th:src="${product.imgUrl}" alt="Product" th:alt="${product.name}">
-        <h2 th:text="${product.name}">Product</h2>
-        <p th:text=" ${product.price} + '￥'"></p>
-        <p th:text="${product.quantity}"></p>
-        <button th:onclick="'removeProduct(' + ${iterationStat.index} + ')'" >Remove</button>
-    </div>
-</div>
 
-<div class="total">
-    <p>Total: <span id="totalAmount"></span>￥</p>
-    <button>Checkout</button>
-</div>
+<body>
+    <div class="centered-text">
+        <h1>Your Shopping Cart</h1>
+    </div>
+    <div class="right-top">
+        <span th:text="${session.user.name}"></span>
+        <button id="toggle-options">user options</button>
+        <div class="user-options">
+            <a href="/welcome">Back</a>
+            <a href="/logout">Logout</a>
+        </div>
+    </div>
+    <div id="cart">
+        <div class="cart-product product" th:each="product, iterationStat : ${products}">
+            <input type="hidden" th:id="'productId_' + ${iterationStat.index}" th:value="${product.productId}">
+            <img th:src="${product.imgUrl}" alt="Product" th:alt="${product.name}">
+            <h2 th:text="${product.name}">Product</h2>
+            <p th:text=" ${product.price} + '￥'"></p>
+            <p th:text="${product.quantity}"></p>
+            <input type="checkbox" th:id="'checkbox_' + ${iterationStat.index}"
+                th:onclick="'updateSelectedProducts(' + ${iterationStat.index} + ');updateTotalAmount()'" checked />
+
+            <button th:onclick="'removeProduct(' + ${iterationStat.index} + ')'">Remove</button>
+        </div>
+    </div>
+
+    <div class="total">
+        <p>Total: <span id="totalAmount"></span>￥</p>
+        <button onclick="checkout()">Checkout</button>
+    </div>
 </body>
+
 </html>
