@@ -173,20 +173,22 @@
         }
 
         function checkout() {
-            $.ajax({
-                url: '/checkout',
-                type: 'POST',
-                data: { selectedProducts },
-                success: function (response) {
-                    // 处理成功的响应
-                    console.log(response);
-                    window.location.href = '/viewcart';
-                },
-                error: function (error) {
-                    // 处理错误
-                    alert('请求失败');
-                }
-            });
+         $.ajax({
+            url: '/checkout',
+            type: 'POST',
+            dataType: 'json',
+            contentType: "application/json",
+            data : JSON.stringify(selectedProducts),//转为json格式
+            success: function (response) {
+              // handle successful response
+              console.log(response);
+              window.location.href = '/viewcart';
+            },
+            error: function (error) {
+              // handle error
+              alert('请求失败');
+            }
+         });
         }
     </script>
     <title>Shopping Cart</title>
@@ -212,7 +214,7 @@
             <p th:text=" ${product.price} + '￥'"></p>
             <p th:text="${product.quantity}"></p>
             <input type="checkbox" th:id="'checkbox_' + ${iterationStat.index}"
-                th:onclick="'updateSelectedProducts(' + ${iterationStat.index} + ');updateTotalAmount()'" checked />
+                th:onclick="'updateSelectedProducts(' + ${iterationStat.index} + ');updateTotalAmount()'" />
 
             <button th:onclick="'removeProduct(' + ${iterationStat.index} + ')'">Remove</button>
         </div>

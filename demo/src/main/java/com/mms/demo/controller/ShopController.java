@@ -12,10 +12,7 @@ import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Objects;
@@ -77,14 +74,14 @@ public class ShopController {
 
     @PostMapping("/checkout")
     @ResponseBody
-    public Result checkout(@RequestParam("selectedProducts") List<Integer> selectedProducts, HttpSession session) {
+    public Result checkout(@RequestBody List<String> selectedProducts, HttpSession session) {
         Object atr = session.getAttribute("id");
         if(atr == null){
             return Result.err("not login");
         }
         int id = (Integer)atr;
-        for(int productId:selectedProducts){
-            cartMapper.removeOrder(id,productId);
+        for(String productId:selectedProducts){
+            cartMapper.removeOrder(id,Integer.parseInt(productId));
         }
         return Result.ok(null);
     }
