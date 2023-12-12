@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+    <head>
+        <meta charset="UTF-8">
+        <title>Admin - All Products</title>
+    </head>
+    <style>
+
+        body {
+           font-family: 'Arial', sans-serif;
+           background-color: #f2f2f2;
+           color: #333;
+           margin: 0;
+           padding: 20px;
+       }
+
+       th, td {
+           padding: 12px;
+           text-align: left;
+           border-bottom: 1px solid #ddd;
+       }
+
+       th {
+           background-color: #4caf50;
+           color: #fff;
+       }
+       .right-top {
+           position: absolute;
+           top: 10px;
+           right: 10px;
+           display: flex;
+           align-items: center;
+           background-color: #fff; /* White background for user information */
+           padding: 10px;
+           border-radius: 8px;
+           box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+       }
+       button {
+           margin: 10px;
+           padding: 10px 20px;
+           background-color: #4caf50;
+           color: #fff;
+           border: none;
+           border-radius: 5px;
+           cursor: pointer;
+       }
+
+       .user-options {
+           margin-left: 10px;
+           display: none;
+       }
+
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const toggleButton = document.getElementById('toggle-options');
+            const userOptions = document.querySelector('.user-options');
+
+            toggleButton.addEventListener('click', function () {
+                if (userOptions.style.display === 'none' || userOptions.style.display === '') {
+                    userOptions.style.display = 'block';
+                } else {
+                    userOptions.style.display = 'none';
+                }
+            });
+        });
+    </script>
+
+
+    <body>
+
+        <h2>All Products</h2>
+        <div class="right-top">
+            <span>Hello, <span th:text="${session.user.name}"></span> </span>
+            <button id="toggle-options">user options</button>
+            <div class="user-options">
+                <a href="/logout">Logout</a>
+                <a href="/admin/viewlog">View logs</a>
+            </div>
+        </div>
+
+        <table border="1">
+            <thead>
+            <tr>
+                <th>Product ID</th>
+                <th>Name</th>
+                <th>Price</th>
+                <th>Image</th>
+                <th>Quantity</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="product : ${products}">
+                <td th:text="${product.productId}"></td>
+                <td th:text="${product.name}"></td>
+                <td th:text="${product.price}"></td>
+                <td><img th:src="${product.imgUrl}" alt="Product Image" style="max-width: 100px; max-height: 100px;"></td>
+                <td th:text="${product.quantity}"></td>
+            </tr>
+            </tbody>
+        </table>
+
+        <!-- Add links or buttons for adding/deleting products -->
+
+    </body>
+
+</html>

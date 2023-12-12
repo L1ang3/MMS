@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mms.demo.mapper.LogMapper">
+    <select id="findAllLog" resultMap="LogInfoMap">
+        select
+        *
+        from log
+    </select>
+
+    <resultMap id="LogInfoMap" type="com.mms.demo.model.LogInfo">
+        <id column="logid" javaType="java.lang.Integer" property="logid" />
+        <result column="userid" javaType="java.lang.Integer" property="userid"/>
+        <result column="productid" javaType="java.lang.Integer" property="productid"/>
+        <result column="updatetime" javaType="java.lang.String" property="updatetime"/>
+        <result column="actionid" javaType="java.lang.Integer" property="actionid"/>
+    </resultMap>
+
+    <insert id="addLog">
+        INSERT INTO log (userid, productid, updatetime, actionid)
+        values (#{userid},#{productid},#{updatetime},#{actionid})
+    </insert>
+
+</mapper>

@@ -130,6 +130,24 @@
             // 获取产品名称、价格和产品ID
             var productId = document.getElementById("productId_" + index).value;
             var quantity = document.getElementById("quantity_" + index).value;
+            var messageId = 2;
+            var currentDate = new Date();
+            var date = currentDate.toLocaleString('zh-CN');
+
+
+            $.ajax({
+                url: '/addlog',
+                type: 'POST',
+                data: { productId, messageId, date },
+                success: function(response) {
+                    // 处理成功的响应
+                    console.log(response);
+                },
+                error: function(error) {
+                    // 处理错误
+                    alert('请求失败');
+                }
+            });
 
             // 发送POST请求
             $.ajax({
@@ -146,6 +164,27 @@
                     alert('请求失败');
                 }
             });
+        }
+
+        function viewDetails(productId) {
+            var messageId = 1;
+            var currentDate = new Date();
+            var date = currentDate.toLocaleString('zh-CN');
+            $.ajax({
+                url: '/addlog',
+                type: 'POST',
+                data: { productId, messageId, date },
+                success: function(response) {
+                    // 处理成功的响应
+                    console.log(response);
+                    window.location.href = '/productDetails?productId=' + productId;
+                },
+                error: function(error) {
+                    // 处理错误
+                    alert('请求失败');
+                }
+            });
+
         }
     </script>
 
@@ -175,6 +214,7 @@
             <span th:text="${product.price}+￥"></span>
             <input type="number" th:id="'quantity_' + ${iterationStat.index}" value="1" min="1">
             <button th:onclick="'addToCart('+${iterationStat.index}+')'">Add to cart</button>
+            <button th:onclick="'viewDetails('+${product.productId}+')'">View Details</button>
         </div>
 
         <!-- 在第5张图片后插入一个新的product-group -->

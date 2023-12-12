@@ -2,6 +2,7 @@
 use mms;
 
 -- Prepare user table
+DROP TABLE IF EXISTS log;
 
 DROP TABLE IF EXISTS cart;
 
@@ -36,6 +37,14 @@ VALUES (
         '12345678910',
         '0.0.0.0',
         true
+    ),
+    (
+        '8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92',
+        'user1',
+        '12345678@qq.com',
+        '12345678910',
+        '0.0.0.0',
+        false
     );
 
 -- Prepare product table
@@ -73,6 +82,17 @@ CREATE TABLE
         userid INT,
         productid INT,
         quantity INT,
+        FOREIGN KEY (userid) REFERENCES user(UserID),
+        FOREIGN KEY (productid) REFERENCES product(productid)
+    );
+
+CREATE TABLE
+    log (
+        logid INT PRIMARY KEY AUTO_INCREMENT,
+        userid INT,
+        productid INT,
+        updatetime timestamp,
+        actionid INT,
         FOREIGN KEY (userid) REFERENCES user(UserID),
         FOREIGN KEY (productid) REFERENCES product(productid)
     );

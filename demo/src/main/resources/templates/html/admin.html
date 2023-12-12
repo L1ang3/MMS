@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Dashboard</title>
+    <style>
+        .right-top {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            display: flex;
+            align-items: center;
+            background-color: #fff; /* White background for user information */
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+        }
+        button {
+            margin: 10px;
+            padding: 10px 20px;
+            background-color: #4caf50;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .user-options {
+            margin-left: 10px;
+            display: none;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f2f2f2;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h2 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #4caf50;
+            color: #fff;
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const toggleButton = document.getElementById('toggle-options');
+            const userOptions = document.querySelector('.user-options');
+
+            toggleButton.addEventListener('click', function () {
+                if (userOptions.style.display === 'none' || userOptions.style.display === '') {
+                    userOptions.style.display = 'block';
+                } else {
+                    userOptions.style.display = 'none';
+                }
+            });
+        });
+    </script>
+
+</head>
+
+<body>
+<h2>User Activity Records</h2>
+<div class="right-top">
+    <span>Hello, <span th:text="${session.user.name}"></span> </span>
+    <button id="toggle-options">user options</button>
+    <div class="user-options">
+        <a href="/logout">Logout</a>
+        <a href="/admin/products">Manage products</a>
+    </div>
+</div>
+
+<table>
+    <thead>
+    <tr>
+        <th>User ID</th>
+        <th>Product ID</th>
+        <th>Action</th>
+        <th>Date/Time</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- Loop through user activity records and populate the table -->
+    <tr th:each="record : ${activityRecords}">
+        <td th:text="${record.userid}"></td>
+        <td th:text="${record.productid}"></td>
+        <td th:switch="${record.actionid}">
+            <span th:case="1">user viewed the details</span>
+            <span th:case="2">user add this product to cart</span>
+            <span th:case="3">user remove this product from cart</span>
+            <span th:case="4">user check out this product</span>
+        </td>
+        <td th:text="${record.updatetime}"></td>
+    </tr>
+    </tbody>
+</table>
+
+<!-- Add pagination or additional features as needed -->
+
+</body>
+
+</html>

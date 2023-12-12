@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Product Details</title>
+    <!-- Include any additional styles or scripts needed for the details page -->
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f2f2f2;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+
+        div {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            color: #333;
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        p {
+            font-size: 18px;
+            color: #4caf50;
+        }
+
+        a {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #4caf50;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        a:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+
+<body>
+<div>
+    <h2 th:text="${product.name}"></h2>
+    <img th:src="${product.imgUrl}" alt="Product Image">
+    <p th:text="'Price: ' + ${product.price} + '￥'"></p>
+    <!-- Add more details as needed -->
+
+    <!-- Example: Go back to the main page -->
+    <a href="/welcome">Back to Main Page</a>
+</div>
+
+<!-- Include any additional scripts needed for the details page -->
+</body>
+
+</html>

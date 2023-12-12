@@ -3,6 +3,12 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.mms.demo.mapper.ProductMapper">
+    <select id="findProductById" resultType="com.mms.demo.model.Product">
+        select
+        productid,name,price,imageurl as imgUrl,quantity
+        from product
+        where productid=#{id}
+    </select>
     <select id="findAllProduct" resultMap="ProductMap">
         select
         *

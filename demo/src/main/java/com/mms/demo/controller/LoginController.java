@@ -20,7 +20,7 @@ public class LoginController {
                         @RequestParam("hashedPassword") String password,
                         HttpSession session) {
         if(loginService.login(loginName,password,session)){
-            return Result.ok(null);
+            return Result.ok(session.getAttribute("user"));
         }
         else{
             return Result.err(null);

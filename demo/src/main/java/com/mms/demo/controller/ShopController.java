@@ -59,6 +59,17 @@ public class ShopController {
         return Result.ok(null);
     }
 
+    @GetMapping("/productDetails")
+    public String getProductDetails(int productId,Model model) {
+        // Logic to retrieve product details based on productId
+        Product product = productMapper.findProductById(productId);
+
+        // Pass the product details to the details page
+        model.addAttribute("product", product);
+        return "html/detail";
+    }
+
+
     @PostMapping("/removecart")
     @ResponseBody
     public Result removeToCart(@RequestParam("productId") int productId, HttpSession session) {

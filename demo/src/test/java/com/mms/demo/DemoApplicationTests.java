@@ -1,8 +1,10 @@
 package com.mms.demo;
 
 import com.mms.demo.mapper.CartMapper;
+import com.mms.demo.mapper.LogMapper;
 import com.mms.demo.mapper.ProductMapper;
 import com.mms.demo.mapper.UserMapper;
+import com.mms.demo.model.LogInfo;
 import com.mms.demo.model.Product;
 import com.mms.demo.model.User;
 import com.mms.demo.service.MailService;
@@ -21,6 +23,8 @@ class DemoApplicationTests {
 	private ProductMapper productMapper;
 	@Autowired
 	private CartMapper cartMapper;
+	@Autowired
+	private LogMapper logMapper;
 
 	@Resource
 	private MailService mailService;
@@ -44,6 +48,7 @@ class DemoApplicationTests {
 	}
 	@Test
 	void findAllProduct(){
+		Product p = productMapper.findProductById(1);
 		List<Product> products = cartMapper.findUserCart(1);
 		for (Product product:products) {
 			System.out.println(product.getName());
@@ -66,4 +71,10 @@ class DemoApplicationTests {
 				"hello world!");
 	}
 
+	@Test
+	void LogTest(){
+		logMapper.addLog(1,1, "2023-12-10 11:16:29", 1);
+		logMapper.addLog(1,2, "2023-12-10 12:36:20", 2);
+		List<LogInfo> logInfos =  logMapper.findAllLog();
+	}
 }

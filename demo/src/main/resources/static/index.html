@@ -24,7 +24,12 @@
                 data: { username, hashedPassword },
                 success: function (result) {
                     if (result.code == 200) {
-                        window.location.href = '/welcome';
+                        if(result.data.isAdmin){
+                            window.location.href = '/admin/viewlog';
+                        }
+                        else{
+                            window.location.href = '/welcome';
+                        }
 
                     } else {
                         alert('登录失败');

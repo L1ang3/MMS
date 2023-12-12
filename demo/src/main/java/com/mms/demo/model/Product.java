@@ -7,6 +7,16 @@ public class Product {
     private String imgUrl;
     private Integer quantity;
 
+    public Product(){}
+
+    public Product(Integer productId,String name,Double price,String imgUrl,Integer quantity){
+        this.productId=productId;
+        this.name = name;
+        this.price = price;
+        this.imgUrl = imgUrl;
+        this.quantity = quantity;
+    }
+
     public Integer getProductId(){return productId;}
     public String getName(){return name;}
     public String getImgUrl(){return imgUrl;}
